@@ -8,7 +8,7 @@ import { usePageNavigation } from '@/hooks/usePageNavigation'
 export function HeroSection() {
   const { navigate } = usePageNavigation()
   const { displayText, isDone } = useTypewriter(
-    ['CLARENCE EVAN WIJAYA', 'A FULLSTACK DEVELOPER', 'A CREATIVE CODER'], 
+    ['CLARENCE EVAN WIJAYA', 'A SOFTWARE ENGINEER', 'A CREATIVE CODER'], 
     100, 
     500,
     true
@@ -26,7 +26,7 @@ export function HeroSection() {
         <div className="flex flex-col items-center gap-6 w-full">
           <div className="font-mono text-[11px] text-teal uppercase tracking-widest inline-flex items-center justify-center gap-4">
             <span className="w-12 h-[1px] bg-teal block"></span>
-            — FULLSTACK DEVELOPER
+            — SOFTWARE ENGINEER
           </div>
 
           <h1 className="font-display text-[80px] uppercase m-0 leading-none text-center">
