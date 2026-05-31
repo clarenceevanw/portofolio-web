@@ -78,4 +78,40 @@ export const projects: Project[] = [
     liveUrl: 'https://innofashionshow.petra.ac.id/',
     githubUrl: '#',
   },
+  {
+    id: '3',
+    slug: 'bem-petra-platform',
+    number: '03',
+    title: 'BEM PETRA PLATFORM',
+
+    description:
+      'Centralized administration platform powering multiple BEM Petra digital services.',
+
+    longDescription:
+      'Developed a centralized administration platform used to manage multiple BEM Petra services, including BEM Petra Store and BEM Intern. Built a role-based access control system with dynamic permissions and route protection, allowing different divisions to manage their respective resources securely. Integrated multiple backend APIs into a unified admin experience, simplifying operational workflows across the organization. Additionally contributed to the BEM Intern website development using Next.js, implementing modern frontend architecture, GSAP-powered animations, and SVG-based interactions.',
+
+    thumbnail: '/projects/bem-admin.jpg',
+
+    images: [
+      '/assets/projects/bem/intern-hero.png',
+    ],
+
+    techStack: [
+      'NEXT.JS',
+      'LARAVEL',
+      'MYSQL',
+      'GSAP',
+      'TAILWINDCSS',
+      'RBAC',
+    ],
+
+    category: 'FULLSTACK',
+
+    year: '2025',
+
+    role: 'Fullstack Developer',
+
+    liveUrl: '#',
+    githubUrl: '#',
+  }
 ]
