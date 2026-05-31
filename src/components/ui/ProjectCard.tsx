@@ -32,13 +32,14 @@ export function ProjectCard({ project, fullWidth = false, onClick }: ProjectCard
           {project.number}
         </span>
         
-        <h3 className="font-display text-[22px] uppercase text-white mb-2">
-          {project.title}
-        </h3>
-        
-        <p className="font-mono text-[12px] text-[#777] line-clamp-2 mb-auto uppercase">
-          {project.techStack.join(' / ')}
-        </p>
+        <div className="pr-16 mb-auto relative z-10">
+          <h3 className="font-display text-[22px] uppercase text-white mb-2">
+            {project.title}
+          </h3>
+          <p className="font-mono text-[12px] text-[#777] line-clamp-2 uppercase">
+            {project.techStack.join(' / ')}
+          </p>
+        </div>
         
         <div className="flex flex-wrap gap-2 mt-4">
           {project.techStack.map(tech => (
