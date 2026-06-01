@@ -89,7 +89,7 @@ export function ProjectsSection() {
         </div>
 
         <div ref={trackRef} className="projects-track flex flex-row gap-[32px] pl-[10vw] pr-0 w-fit relative z-10 pointer-events-auto items-center">
-          {projects.slice(0, 4).map((project) => (
+          {projects.slice(0, 5).map((project) => (
             <ProjectCard 
               key={project.id} 
               project={project} 
