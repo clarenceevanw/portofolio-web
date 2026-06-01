@@ -131,6 +131,20 @@ export default function ProjectDetailClient({ project, nextProject }: ProjectDet
                 <p key={i}>{para}</p>
               ))}
             </div>
+
+            {project.contributions && project.contributions.length > 0 && (
+              <>
+                <h2 className="font-mono text-[14px] uppercase text-teal mt-8">— MY_CONTRIBUTION</h2>
+                <ul className="font-mono text-[13px] text-muted flex flex-col gap-4 max-w-[500px] leading-[1.6] list-none p-0">
+                  {project.contributions.map((contribution, i) => (
+                    <li key={i} className="flex gap-3 items-start">
+                      <span className="text-teal mt-[2px]">▸</span>
+                      <span>{contribution}</span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
           
           {/* Right: Info Panel */}

@@ -13,6 +13,7 @@ export interface Project {
   role: string
   liveUrl?: string
   githubUrl: string
+  contributions?: string[]
 }
 
 export interface TechBadge {
