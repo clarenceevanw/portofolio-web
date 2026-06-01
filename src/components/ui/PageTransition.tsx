@@ -57,9 +57,12 @@ export default function PageTransition() {
         transform: translateX(0);
         will-change: transform;
       `
-      // Add teal glitch accent on random slices
+      // Add teal glitch accent on random slices - using border for better visibility
       if (i % 3 === 0) {
-        slice.style.boxShadow = 'inset 0 0 0 1px rgba(0,229,204,0.3)'
+        slice.style.borderTop = '1px solid rgba(0,229,204,0.5)'
+        slice.style.borderBottom = '1px solid rgba(0,229,204,0.2)'
+      } else if (i % 2 === 0) {
+        slice.style.borderBottom = '1px solid rgba(255,255,255,0.1)'
       }
       slices.appendChild(slice)
     }
@@ -106,6 +109,7 @@ export default function PageTransition() {
     // --- PHASE 2: TERMINAL BOOT ENTER (600ms) ---
     // Show terminal, hide slices (keep black bg)
     terminal.style.opacity = '1'
+    setBootLines(Array(BOOT_LINES.length).fill(''))
 
     // Type each boot line sequentially
     for (let i = 0; i < BOOT_LINES.length; i++) {
@@ -161,9 +165,9 @@ export default function PageTransition() {
         zIndex: 9999,
         background: '#000',
         flexDirection: 'column',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'center',
-        padding: '0 10vw',
+        padding: '0 clamp(16px, 6vw, 10vw)',
       }}
     >
       {/* Glitch slices layer */}
@@ -183,8 +187,11 @@ export default function PageTransition() {
           position: 'relative',
           zIndex: 2,
           opacity: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-center',
           fontFamily: 'var(--font-mono)',
-          fontSize: '14px',
+          fontSize: 'clamp(11px, 3.5vw, 15px)',
           lineHeight: '2',
           letterSpacing: '0.05em',
         }}
@@ -196,6 +203,7 @@ export default function PageTransition() {
               display: 'flex', 
               alignItems: 'center', 
               gap: '8px',
+              minHeight: '2em',
               color: i === BOOT_LINES.length - 1 && line === BOOT_LINES[3] ? '#ffffff' : '#00e5cc'
             }}
           >
