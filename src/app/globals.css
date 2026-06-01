@@ -58,6 +58,15 @@ button {
   background: var(--border-mid);
 }
 
+/* Utility for hiding scrollbar on specific horizontal scroll areas while preserving functionality */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Shimmer effect on project cards */
 .project-card::after {
   content: '';
