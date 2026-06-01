@@ -3,9 +3,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 
-const BOOT_LINES = [
+const BOOT_LINES_INITIAL = [
+  '> BOOTING_EVAN_OS_v2.0...',
+  '> LOADING_SYSTEM_ASSETS...',
+  '> ESTABLISHING_SECURE_CONNECTION...',
+  '> ACCESS_GRANTED.',
+]
+
+const BOOT_LINES_NAV = [
   '> INITIALIZING_SYSTEM...',
-  '> LOADING_PAGE.EXE',
+  '> LOADING_PAGE.EXE...',
   '> RENDERING_COMPONENTS...',
   '> ACCESS_GRANTED.',
 ]
@@ -13,22 +20,33 @@ const BOOT_LINES = [
 export default function PageTransition() {
   const pathname = usePathname()
   const prevPathname = useRef(pathname)
+  const isInitialBoot = useRef(true)
   const containerRef = useRef<HTMLDivElement>(null)
   const terminalRef = useRef<HTMLDivElement>(null)
   const slicesRef = useRef<HTMLDivElement>(null)
-  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(true) // Start true for initial boot
   const [bootLines, setBootLines] = useState<string[]>([])
+  const [activeBootLines, setActiveBootLines] = useState<string[]>(BOOT_LINES_INITIAL)
 
   useEffect(() => {
+    if (isInitialBoot.current) {
+      isInitialBoot.current = false
+      runTransition(true)
+      return
+    }
+
     if (pathname === prevPathname.current) return
     prevPathname.current = pathname
-    runTransition()
+    runTransition(false)
   }, [pathname])
 
-  const runTransition = async () => {
+  const runTransition = async (isInitial: boolean = false) => {
     const gsap = (await import('gsap')).default
     setIsTransitioning(true)
     setBootLines([])
+
+    const linesToUse = isInitial ? BOOT_LINES_INITIAL : BOOT_LINES_NAV
+    setActiveBootLines(linesToUse)
 
     const container = containerRef.current
     const slices = slicesRef.current
@@ -39,92 +57,90 @@ export default function PageTransition() {
     container.style.display = 'flex'
     container.style.opacity = '1'
 
-    // --- PHASE 1: GLITCH SLICE EXIT (400ms) ---
-    // Create 8 horizontal slices
-    slices.innerHTML = ''
-    const SLICE_COUNT = 8
-    const sliceHeight = window.innerHeight / SLICE_COUNT
+    if (!isInitial) {
+      // --- PHASE 1: GLITCH SLICE EXIT (400ms) - Only on navigation ---
+      slices.innerHTML = ''
+      const SLICE_COUNT = 8
+      const sliceHeight = window.innerHeight / SLICE_COUNT
 
-    for (let i = 0; i < SLICE_COUNT; i++) {
-      const slice = document.createElement('div')
-      slice.style.cssText = `
-        position: absolute;
-        left: 0;
-        width: 100%;
-        height: ${sliceHeight + 1}px;
-        top: ${i * sliceHeight}px;
-        background: #000;
-        transform: translateX(0);
-        will-change: transform;
-      `
-      // Add teal glitch accent on random slices - using border for better visibility
-      if (i % 3 === 0) {
-        slice.style.borderTop = '1px solid rgba(0,229,204,0.5)'
-        slice.style.borderBottom = '1px solid rgba(0,229,204,0.2)'
-      } else if (i % 2 === 0) {
-        slice.style.borderBottom = '1px solid rgba(255,255,255,0.1)'
-      }
-      slices.appendChild(slice)
-    }
-
-    const sliceEls = slices.querySelectorAll('div')
-
-    // Animate slices in staggered — odd left, even right
-    await new Promise<void>(resolve => {
-      gsap.fromTo(sliceEls,
-        { x: (i) => i % 2 === 0 ? '-100%' : '100%', opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.04,
-          stagger: {
-            each: 0.04,
-            from: 'random'
-          },
-          ease: 'none',
-          onComplete: resolve
+      for (let i = 0; i < SLICE_COUNT; i++) {
+        const slice = document.createElement('div')
+        slice.style.cssText = `
+          position: absolute;
+          left: 0;
+          width: 100%;
+          height: ${sliceHeight + 1}px;
+          top: ${i * sliceHeight}px;
+          background: #000;
+          transform: translateX(0);
+          will-change: transform;
+        `
+        if (i % 3 === 0) {
+          slice.style.borderTop = '1px solid rgba(0,229,204,0.5)'
+          slice.style.borderBottom = '1px solid rgba(0,229,204,0.2)'
+        } else if (i % 2 === 0) {
+          slice.style.borderBottom = '1px solid rgba(255,255,255,0.1)'
         }
-      )
-    })
+        slices.appendChild(slice)
+      }
 
-    // Brief glitch hold — randomly shift some slices
-    await new Promise<void>(resolve => {
-      gsap.to(sliceEls, {
-        x: (i) => {
-          const offsets = [0, 0, 8, 0, -6, 0, 4, 0]
-          return offsets[i % offsets.length]
-        },
-        duration: 0.08,
-        ease: 'none',
-        stagger: 0.01,
-        yoyo: true,
-        repeat: 2,
-        onComplete: resolve
+      const sliceEls = slices.querySelectorAll('div')
+
+      await new Promise<void>(resolve => {
+        gsap.fromTo(sliceEls,
+          { x: (i) => i % 2 === 0 ? '-100%' : '100%', opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.04,
+            stagger: {
+              each: 0.04,
+              from: 'random'
+            },
+            ease: 'none',
+            onComplete: resolve
+          }
+        )
       })
-    })
 
-    // Snap all slices to x:0 (full black screen)
-    gsap.set(sliceEls, { x: 0 })
+      await new Promise<void>(resolve => {
+        gsap.to(sliceEls, {
+          x: (i) => {
+            const offsets = [0, 0, 8, 0, -6, 0, 4, 0]
+            return offsets[i % offsets.length]
+          },
+          duration: 0.08,
+          ease: 'none',
+          stagger: 0.01,
+          yoyo: true,
+          repeat: 2,
+          onComplete: resolve
+        })
+      })
+
+      gsap.set(sliceEls, { x: 0 })
+    }
 
     // --- PHASE 2: TERMINAL BOOT ENTER (600ms) ---
-    // Show terminal, hide slices (keep black bg)
     terminal.style.opacity = '1'
-    setBootLines(Array(BOOT_LINES.length).fill(''))
+    setBootLines(Array(linesToUse.length).fill(''))
+
+    // Initial boot gets a slightly slower typing speed for dramatic effect
+    const typeSpeed = isInitial ? 24 : 18 
 
     // Type each boot line sequentially
-    for (let i = 0; i < BOOT_LINES.length; i++) {
-      await typeBootLine(BOOT_LINES[i], i)
-      await sleep(80)
+    for (let i = 0; i < linesToUse.length; i++) {
+      await typeBootLine(linesToUse[i], i, typeSpeed)
+      await sleep(isInitial ? 150 : 80) // Slower pause between lines on initial boot
     }
 
-    await sleep(200)
+    await sleep(isInitial ? 400 : 200)
 
     // --- PHASE 3: REVEAL NEW PAGE ---
-    // Fade out entire overlay
     await new Promise<void>(resolve => {
       gsap.to(container, {
         opacity: 0,
-        duration: 0.3,
+        duration: isInitial ? 0.6 : 0.3, // Smoother slower fade out on initial boot
         ease: 'power2.inOut',
         onComplete: resolve
       })
@@ -135,7 +151,7 @@ export default function PageTransition() {
     setBootLines([])
   }
 
-  const typeBootLine = (line: string, index: number): Promise<void> => {
+  const typeBootLine = (line: string, index: number, speed: number): Promise<void> => {
     return new Promise(resolve => {
       let i = 0
       const interval = setInterval(() => {
@@ -149,7 +165,7 @@ export default function PageTransition() {
           clearInterval(interval)
           resolve()
         }
-      }, 18) // 18ms per character — fast terminal feel
+      }, speed) // dynamic speed based on initial load
     })
   }
 
@@ -159,7 +175,7 @@ export default function PageTransition() {
     <div
       ref={containerRef}
       style={{
-        display: 'none',
+        display: isTransitioning ? 'flex' : 'none',
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
@@ -204,13 +220,13 @@ export default function PageTransition() {
               alignItems: 'center', 
               gap: '8px',
               minHeight: '2em',
-              color: i === BOOT_LINES.length - 1 && line === BOOT_LINES[3] ? '#ffffff' : '#00e5cc'
+              color: i === activeBootLines.length - 1 && line === activeBootLines[3] ? '#ffffff' : '#00e5cc'
             }}
           >
             <span>{line}</span>
             {/* Blinking cursor only on last active line */}
             {i === bootLines.length - 1 && (
-              <span className="cursor-blink" style={{ color: i === BOOT_LINES.length - 1 && line === BOOT_LINES[3] ? '#ffffff' : '#00e5cc' }}>█</span>
+              <span className="cursor-blink" style={{ color: i === activeBootLines.length - 1 && line === activeBootLines[3] ? '#ffffff' : '#00e5cc' }}>█</span>
             )}
           </div>
         ))}
