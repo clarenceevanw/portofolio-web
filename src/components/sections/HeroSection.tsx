@@ -8,7 +8,7 @@ import { usePageNavigation } from '@/hooks/usePageNavigation'
 export function HeroSection() {
   const { navigate } = usePageNavigation()
   const { displayText, isDone } = useTypewriter(
-    ['CLARENCE EVAN WIJAYA', 'A SOFTWARE ENGINEER', 'A CREATIVE CODER'], 
+    ['CLARENCE EVAN WIJAYA', 'A SOFTWARE ENGINEER', 'A COMPUTER SCIENCE STUDENT'], 
     100, 
     500,
     true
