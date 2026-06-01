@@ -8,5 +8,5 @@ export const techBadges: TechBadge[] = [
   { name: 'React',      iconSlug: 'react',      brandColor: '#61DAFB', position: { top: '65%', left: '10%' }, depth: 0.14 },
   { name: 'Go',         iconSlug: 'go',         brandColor: '#00ADD8', position: { top: '50%', left: '80%' }, depth: 0.07 },
   { name: 'Python',     iconSlug: 'python',     brandColor: '#3776AB', position: { top: '85%', left: '20%' }, depth: 0.05 },
-  { name: 'Javascript',       iconSlug: 'javascript',    brandColor: '#ffffff', position: { top: '75%', left: '85%' }, depth: 0.09 },
+  { name: 'Typescript', iconSlug: 'typescript', brandColor: '#3178C6', position: { top: '75%', left: '85%' }, depth: 0.09 },
 ]
