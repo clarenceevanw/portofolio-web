@@ -3,8 +3,61 @@ import type { Project } from '@/types'
 export const projects: Project[] = [
   {
     id: '1',
-    slug: 'petra-civil-expo-2026',
+    slug: 'banyuin',
     number: '01',
+    title: 'BANYUIN',
+    description:
+    'IoT-powered water quality monitoring SaaS with real-time analytics, mobile notifications, and subscription management.',
+    longDescription:
+    'BanyuIn is an end-to-end IoT platform designed to monitor pond water quality in real time. The system combines ESP32-based hardware, a Golang backend, and a Flutter mobile application to provide continuous pH monitoring, anomaly detection, and automated alerts for fish farmers. Built using Clean Architecture principles, the platform supports multi-pond management, device provisioning, real-time data streaming through Server-Sent Events (SSE), PDF report generation, and subscription-based device activation. An integrated payment gateway and Firebase Cloud Messaging enable seamless billing and early warning notifications, creating a complete SaaS ecosystem for precision aquaculture monitoring.',
+    thumbnail: '/assets/projects/banyuin/logo.png',
+    images: [
+      '/assets/projects/banyuin/dashboard.jpeg',
+      '/assets/projects/banyuin/splash.jpeg',
+      '/assets/projects/banyuin/notif-history.jpeg',
+      '/assets/projects/banyuin/early-warning-notif.jpeg',
+      '/assets/projects/banyuin/login.jpeg',
+      '/assets/projects/banyuin/pond.jpeg',
+      '/assets/projects/banyuin/pond-detail.jpeg',
+      '/assets/projects/banyuin/report.jpeg',
+      '/assets/projects/banyuin/weekly-report.jpeg',
+      '/assets/projects/banyuin/subscription.jpeg',
+      '/assets/projects/banyuin/payment.jpeg',
+      '/assets/projects/banyuin/payment-instruction.jpeg',
+      '/assets/projects/banyuin/payment-success.jpeg',
+    ],
+
+    techStack: [
+    'GOLANG',
+    'FLUTTER',
+    'ESP32',
+    'MYSQL',
+    'SSE',
+    'FCM',
+    ],
+    category: 'MOBILE',
+    year: '2026',
+
+    role: 'Software Engineer',
+    liveUrl: '#',
+    githubUrl: 'https://github.com/orgs/BanyuIn/repositories',
+
+    contributions: [
+      'Designed and developed the complete end-to-end IoT ecosystem as a solo project',
+      'Built ESP32 integration for real-time pH sensor data collection and transmission',
+      'Architected the backend using Golang Clean Architecture with Domain, Repository, Service, and Handler layers',
+      'Implemented Server-Sent Events (SSE) for real-time sensor monitoring in the mobile application',
+      'Developed the Flutter mobile application using BLoC/Cubit state management and dependency injection',
+      'Implemented anomaly detection and Firebase Cloud Messaging (FCM) based early warning notifications',
+      'Built subscription management workflows and integrated midtrans payment gateway services for device activation',
+      'Developed data visualization and multi-pond management features'
+    ]
+  },
+
+  {
+    id: '2',
+    slug: 'petra-civil-expo-2026',
+    number: '02',
     title: 'PETRA CIVIL EXPO 2026',
     description:
       'Real-time event platform supporting registrations, live games, attendance tracking, and administrative operations.',
@@ -44,9 +97,9 @@ export const projects: Project[] = [
   },
 
   {
-    id: '2',
+    id: '3',
     slug: 'innofashion-show-8',
-    number: '02',
+    number: '03',
     title: 'INNOFASHION SHOW 8',
     description:
       'Full-stack event management platform with QR ticketing, RBAC, dynamic forms, and authentication systems.',
@@ -92,9 +145,9 @@ export const projects: Project[] = [
     ]
   },
   {
-    id: '3',
+    id: '4',
     slug: 'gudang-pintar',
-    number: '03',
+    number: '04',
     title: 'GUDANGPINTAR',
     description:
       'Multi-tenant warehouse management SaaS with inventory tracking, subscriptions, and QR-based operations.',
@@ -133,17 +186,25 @@ export const projects: Project[] = [
     ]
   },
   {
-    id: '4',
+    id: '5',
     slug: 'bem-petra-platform',
-    number: '04',
+    number: '05',
     title: 'BEM PETRA PLATFORM',
     description:
       'Centralized administration platform powering multiple BEM Petra digital services.',
     longDescription:
       'Developed a centralized administration platform used to manage multiple BEM Petra services, including BEM Petra Store and BEM Intern. Built a role-based access control system with dynamic permissions and route protection, allowing different divisions to manage their respective resources securely. Integrated multiple backend APIs into a unified admin experience, simplifying operational workflows across the organization. Additionally contributed to the BEM Intern website development using Next.js, implementing modern frontend architecture, GSAP-powered animations, and SVG-based interactions.',
-    thumbnail: '/assets/projects/bem/hero.png',
+    thumbnail: '/assets/projects/bem/intern-hero.png',
     images: [
       '/assets/projects/bem/intern-hero.png',
+      '/assets/projects/bem/intern-dep.png',
+      '/assets/projects/bem/intern-berkas.png',
+      '/assets/projects/bem/admin.png',
+      '/assets/projects/bem/admin-dashboard.png',
+      '/assets/projects/bem/admin-bps-transaction.png',
+      '/assets/projects/bem/admin-bps-products.png',
+      '/assets/projects/bem/admin-bps-product.png',
+      '/assets/projects/bem/admin-bps-product-detail.png',
     ],
     techStack: [
       'NEXT.JS',
@@ -166,9 +227,9 @@ export const projects: Project[] = [
     ]
   },
   {
-    id: '5',
+    id: '6',
     slug: 'youthentic-perfume',
-    number: '05',
+    number: '06',
     title: 'YOUTHENTIC PERFUME',
     description:
       'Brand website and product catalog platform developed for a local perfume business.',

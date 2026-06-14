@@ -115,7 +115,7 @@ export default function ProjectDetailClient({ project, nextProject }: ProjectDet
 
       {/* Carousel Section */}
       <section className="py-16 border-b border-white reveal opacity-0">
-        <ImageCarousel images={project.images} projectTitle={project.title} />
+        <ImageCarousel images={project.images} projectTitle={project.title} projectCategory={project.category} />
       </section>
 
       {/* Details Two-Column */}

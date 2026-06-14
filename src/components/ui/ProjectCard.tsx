@@ -21,8 +21,8 @@ export function ProjectCard({ project, fullWidth = false, onClick }: ProjectCard
       <div className="h-[60%] w-full bg-[#1a1a1a] relative overflow-hidden">
         <div className="absolute inset-0 diagonal-pattern z-0 opacity-50"></div>
         <div 
-          className="w-full h-full bg-transparent transition-transform duration-500 group-hover:scale-[1.08] bg-cover bg-center z-10 relative"
-          style={{ backgroundImage: `url(${project.images?.[0] || project.thumbnail})` }}
+          className={`w-full h-full bg-transparent transition-transform duration-500 group-hover:scale-[1.08] bg-center z-10 relative ${project.category === 'MOBILE' ? 'bg-contain bg-no-repeat' : 'bg-cover'}`}
+          style={{ backgroundImage: `url(${project.thumbnail || project.images?.[0] })` }}
         ></div>
       </div>
       

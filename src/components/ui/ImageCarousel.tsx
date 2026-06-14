@@ -6,24 +6,30 @@ import { createPortal } from 'react-dom'
 interface ImageCarouselProps {
   images: string[]
   projectTitle: string
+  projectCategory?: string
 }
 
-export function ImageCarousel({ images, projectTitle }: ImageCarouselProps) {
+export function ImageCarousel({ images, projectTitle, projectCategory }: ImageCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const [showModal, setShowModal] = useState(false)
 
+  const getScrollAmount = () => {
+    if (!trackRef.current || !trackRef.current.firstElementChild) return window.innerWidth * 0.6
+    return trackRef.current.firstElementChild.clientWidth
+  }
+
   const handleNext = () => {
     if (!trackRef.current) return
-    const scrollAmount = window.innerWidth * 0.6
-    trackRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+    trackRef.current.scrollBy({ left: getScrollAmount(), behavior: 'smooth' })
   }
 
   const handlePrev = () => {
     if (!trackRef.current) return
-    const scrollAmount = window.innerWidth * 0.6
-    trackRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' })
+    trackRef.current.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' })
   }
+
+  const isMobile = projectCategory?.toUpperCase() === 'MOBILE'
 
   const handleOpenPreview = (img: string) => {
     setPreviewImage(img)
@@ -46,7 +52,9 @@ export function ImageCarousel({ images, projectTitle }: ImageCarouselProps) {
           {images.map((img, idx) => (
             <div 
               key={idx}
-              className="flex-none scroll-snap-align-start h-full min-w-[85vw] md:min-w-[70vw] border-r border-border-mid relative bg-[#131313] flex items-center justify-center overflow-hidden cursor-pointer group"
+              className={`flex-none scroll-snap-align-start h-full border-r border-border-mid relative bg-[#131313] flex items-center justify-center overflow-hidden cursor-pointer group ${
+                isMobile ? 'aspect-[9/16] max-w-[85vw]' : 'min-w-[85vw] md:min-w-[70vw]'
+              }`}
               style={{ scrollSnapAlign: 'start' }}
               onClick={() => handleOpenPreview(img)}
             >
@@ -56,7 +64,9 @@ export function ImageCarousel({ images, projectTitle }: ImageCarouselProps) {
               <img 
                 src={img} 
                 alt={`${projectTitle} screenshot ${idx + 1}`}
-                className="absolute inset-0 w-full h-full object-cover z-0 select-none transition-transform duration-500 group-hover:scale-[1.02]"
+                className={`absolute inset-0 w-full h-full z-0 select-none transition-transform duration-500 group-hover:scale-[1.02] ${
+                  isMobile ? 'object-contain' : 'object-cover'
+                }`}
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = 'none';
                 }}
