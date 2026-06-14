@@ -10,7 +10,7 @@ export const projects: Project[] = [
     'IoT-powered water quality monitoring SaaS with real-time analytics, mobile notifications, and subscription management.',
     longDescription:
     'BanyuIn is an end-to-end IoT platform designed to monitor pond water quality in real time. The system combines ESP32-based hardware, a Golang backend, and a Flutter mobile application to provide continuous pH monitoring, anomaly detection, and automated alerts for fish farmers. Built using Clean Architecture principles, the platform supports multi-pond management, device provisioning, real-time data streaming through Server-Sent Events (SSE), PDF report generation, and subscription-based device activation. An integrated payment gateway and Firebase Cloud Messaging enable seamless billing and early warning notifications, creating a complete SaaS ecosystem for precision aquaculture monitoring.',
-    thumbnail: '/assets/projects/banyuin/logo.png',
+    thumbnail: '/assets/projects/banyuin/thumbnail.png',
     images: [
       '/assets/projects/banyuin/dashboard.jpeg',
       '/assets/projects/banyuin/splash.jpeg',
