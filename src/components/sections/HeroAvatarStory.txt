@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { AVATAR_FRAME_COUNT, getAvatarFrameSrc, useAvatarFrames } from '@/hooks/useAvatarFrames'
 import { usePageNavigation } from '@/hooks/usePageNavigation'
 
 type StoryPlacement = 'right' | 'topRight' | 'topLeft' | 'left' | 'bottomLeft' | 'bottomRight'
@@ -11,6 +12,7 @@ type StoryCheckpoint = {
   direction: string
   start: number
   end: number
+  frame: number
   placement: StoryPlacement
   text: string
 }
@@ -22,6 +24,7 @@ const MOBILE_ABOUT_PARAGRAPHS = [
   'My experience spans backend architecture, authentication systems, WebSocket communication, database design, and deployment pipelines. Currently serving as both a Laboratory Assistant and Teaching Assistant, I enjoy building software, solving complex problems, and helping others understand how technology works beneath the surface.',
 ]
 
+const AVATAR_PRIORITY_FRAMES = [1, 24, 44, 70, 95, 123, 150, 180]
 const MOBILE_PROFILE_PHOTO = '/assets/avatar/profile-remove.png'
 const HERO_CHROME_FADE_START = 0.05
 const HERO_CHROME_FADE_END = 0.12
@@ -33,6 +36,7 @@ export const AVATAR_STORY_CHECKPOINTS: StoryCheckpoint[] = [
     direction: 'right',
     start: 0.1,
     end: 0.24,
+    frame: 30,
     placement: 'right',
     text: "I'm a Software Engineer and 4th-semester Computer Science student at Petra Christian University, based in Surabaya, Indonesia.",
   },
@@ -42,6 +46,7 @@ export const AVATAR_STORY_CHECKPOINTS: StoryCheckpoint[] = [
     direction: 'right-up',
     start: 0.25,
     end: 0.42,
+    frame: 58,
     placement: 'topRight',
     text: 'I build scalable web applications, real-time platforms, and full-stack systems using Laravel and Next.js.',
   },
@@ -51,6 +56,7 @@ export const AVATAR_STORY_CHECKPOINTS: StoryCheckpoint[] = [
     direction: 'left',
     start: 0.43,
     end: 0.6,
+    frame: 95,
     placement: 'topLeft',
     text: 'My experience spans backend architecture, authentication systems, WebSocket communication, database design, and deployment pipelines.',
   },
@@ -60,6 +66,7 @@ export const AVATAR_STORY_CHECKPOINTS: StoryCheckpoint[] = [
     direction: 'left-down',
     start: 0.61,
     end: 0.78,
+    frame: 123,
     placement: 'bottomLeft',
     text: 'Currently serving as both a Laboratory Assistant and Teaching Assistant, I enjoy solving complex problems and helping others understand how technology works beneath the surface.',
   },
@@ -69,6 +76,7 @@ export const AVATAR_STORY_CHECKPOINTS: StoryCheckpoint[] = [
     direction: 'center',
     start: 0.79,
     end: 1,
+    frame: 180,
     placement: 'bottomRight',
     text: 'The stack is practical, the systems thinking is intentional, and the next build is already waiting.',
   },
@@ -138,12 +146,17 @@ function getHeroChromeOpacity(progress: number) {
 
 export function HeroAvatarStory() {
   const sectionRef = useRef<HTMLElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const avatarRef = useRef<HTMLImageElement>(null)
+  const [currentFrame, setCurrentFrame] = useState(1)
   const [activeCheckpointId, setActiveCheckpointId] = useState<string | null>(null)
   const [storyProgress, setStoryProgress] = useState(0)
   const prefersReducedMotion = usePrefersReducedMotion()
   const isDesktop = useIsDesktop()
   const { navigate } = usePageNavigation()
+  const { getFrameSrc } = useAvatarFrames({
+    enabled: isDesktop && !prefersReducedMotion,
+    priorityFrames: AVATAR_PRIORITY_FRAMES,
+  })
 
   useLayoutEffect(() => {
     if (prefersReducedMotion) return
@@ -157,9 +170,9 @@ export function HeroAvatarStory() {
 
       ctx = gsap.context(() => {
         const section = sectionRef.current
-        const video = videoRef.current
+        const avatar = avatarRef.current
 
-        if (!section || !video) return
+        if (!section || !avatar) return
 
         gsap.set('.avatar-story-fade', { opacity: 0, y: 20 })
         gsap.to('.avatar-story-fade', {
@@ -173,45 +186,33 @@ export function HeroAvatarStory() {
         const media = gsap.matchMedia()
 
         media.add('(min-width: 768px)', () => {
-          // Setting up GSAP timeline for scrubbing the video time
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: section,
-              start: 'top top',
-              end: () => `+=${window.innerHeight * 3}`,
-              pin: true,
-              pinSpacing: true,
-              scrub: 1, // Angka ini memberikan efek 'easing' (meluncur) agar tidak kaku
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
-              onUpdate: (self) => {
-                const nextCheckpoint = getActiveCheckpoint(self.progress)
-                setActiveCheckpointId((id) => (id === nextCheckpoint?.id ? id : nextCheckpoint?.id ?? null))
-                setStoryProgress(self.progress)
-              },
+          const trigger = ScrollTrigger.create({
+            trigger: section,
+            start: 'top top',
+            end: () => `+=${window.innerHeight * 3}`,
+            pin: true,
+            pinSpacing: true,
+            scrub: 0.7,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const nextFrame = Math.min(
+                AVATAR_FRAME_COUNT,
+                Math.max(1, Math.floor(self.progress * (AVATAR_FRAME_COUNT - 1)) + 1)
+              )
+              const nextCheckpoint = getActiveCheckpoint(self.progress)
+
+              setCurrentFrame((frame) => (frame === nextFrame ? frame : nextFrame))
+              setActiveCheckpointId((id) => (id === nextCheckpoint?.id ? id : nextCheckpoint?.id ?? null))
+              setStoryProgress(self.progress)
             },
           })
-          
-          const attachVideoScrub = () => {
-            if (video.duration) {
-              tl.to(video, {
-                currentTime: video.duration,
-                ease: "none"
-              }, 0) // Start at the beginning of timeline
-            }
-          }
-
-          if (video.readyState >= 1) {
-            attachVideoScrub()
-          } else {
-            video.onloadedmetadata = attachVideoScrub
-          }
 
           return () => {
-            tl.kill()
+            trigger.kill()
+            setCurrentFrame(1)
             setActiveCheckpointId(null)
             setStoryProgress(0)
-            video.onloadedmetadata = null
           }
         })
 
@@ -232,11 +233,13 @@ export function HeroAvatarStory() {
 
   useEffect(() => {
     if (prefersReducedMotion) {
+      setCurrentFrame(1)
       setActiveCheckpointId(null)
       setStoryProgress(1)
     }
   }, [prefersReducedMotion])
 
+  const avatarSrc = prefersReducedMotion ? getAvatarFrameSrc(1) : getFrameSrc(currentFrame)
   const showFinalDock = prefersReducedMotion || storyProgress > 0.78
   const heroChromeOpacity = prefersReducedMotion ? 1 : getHeroChromeOpacity(storyProgress)
   const heroChromePointerEvents = heroChromeOpacity > 0.35 ? 'auto' : 'none'
@@ -251,19 +254,18 @@ export function HeroAvatarStory() {
           : 'min-h-screen overflow-visible px-4 py-24 md:h-[100svh] md:min-h-[720px] md:overflow-hidden md:px-10 md:pb-0 md:pt-24 lg:px-16'
       }`}
     >
-      {/* Background video that scrubs on scroll */}
-      <video
-        ref={videoRef}
-        src="/assets/moving_scrub.mp4"
-        muted
-        playsInline
-        preload="auto"
+      {/* The sequence is full-bleed now so the avatar reads like a laptop-sized scene, not a small floating portrait. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        ref={avatarRef}
+        src={avatarSrc}
+        alt="Clarence Evan cartoon avatar"
         className="pointer-events-none absolute inset-0 z-0 hidden h-full w-full select-none object-cover object-center opacity-95 md:block"
+        draggable={false}
       />
       <div className="pointer-events-none absolute inset-0 z-10 hidden bg-[radial-gradient(circle_at_50%_42%,transparent_18%,rgba(0,0,0,0.28)_52%,rgba(0,0,0,0.88)_100%)] md:block" />
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-56 bg-gradient-to-b from-black via-black/60 to-transparent md:block" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 hidden h-64 bg-gradient-to-t from-black via-black/70 to-transparent md:block" />
-
 
       <div className="relative z-20 mx-auto hidden h-full w-full max-w-[1440px] grid-rows-[auto_1fr_auto] pb-8 md:grid">
         <header
