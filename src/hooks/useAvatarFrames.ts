@@ -30,8 +30,12 @@ export function useAvatarFrames({ enabled = true, priorityFrames = [] }: UseAvat
     let isCancelled = false
     const loaded = new Set<number>()
     const allFrames = Array.from({ length: AVATAR_FRAME_COUNT }, (_, index) => index + 1)
+    
+    // Priority frames get loaded immediately
     const priorityQueue = Array.from(new Set([1, 180, ...priorityFrames]))
       .filter((frame) => frame >= 1 && frame <= AVATAR_FRAME_COUNT)
+    
+    // Lazy frames get loaded sequentially in background
     const lazyQueue = allFrames.filter((frame) => !priorityQueue.includes(frame))
 
     const markLoaded = (frame: number) => {
@@ -40,47 +44,48 @@ export function useAvatarFrames({ enabled = true, priorityFrames = [] }: UseAvat
       setLoadedCount(loaded.size)
     }
 
+    // Helper to load a single frame wrapped in a Promise
     const loadFrame = (frame: number) => {
-      const image = new Image()
-      image.onload = () => markLoaded(frame)
-      image.onerror = () => markLoaded(frame)
-      image.src = getAvatarFrameSrc(frame)
+      return new Promise<void>((resolve) => {
+        const image = new Image()
+        image.onload = () => {
+          markLoaded(frame)
+          resolve()
+        }
+        image.onerror = () => {
+          markLoaded(frame)
+          resolve() // resolve anyway to keep queue moving
+        }
+        image.src = getAvatarFrameSrc(frame)
+      })
     }
 
-    priorityQueue.forEach(loadFrame)
+    // Fire off priority frames immediately (no waiting)
+    priorityQueue.forEach((frame) => {
+      loadFrame(frame)
+    })
 
-    const requestIdle =
-      window.requestIdleCallback ??
-      ((callback: IdleRequestCallback) =>
-        window.setTimeout(
-          () =>
-            callback({
-              didTimeout: false,
-              timeRemaining: () => 16,
-            } as IdleDeadline),
-          80
-        ))
-
-    const cancelIdle =
-      window.cancelIdleCallback ?? ((id: number) => window.clearTimeout(id))
-
-    let idleId: number | undefined
-
-    const loadNextBatch = () => {
-      if (isCancelled) return
-
-      lazyQueue.splice(0, 8).forEach(loadFrame)
-
-      if (lazyQueue.length > 0) {
-        idleId = requestIdle(loadNextBatch)
+    // Sequentially load the rest in small batches to prevent 
+    // network burst that causes ERR_CERT_DATABASE_CHANGED
+    const processLazyQueue = async () => {
+      const concurrency = 4 // Load 4 frames at a time
+      
+      while (lazyQueue.length > 0 && !isCancelled) {
+        const batch = lazyQueue.splice(0, concurrency)
+        await Promise.all(batch.map(loadFrame))
+        
+        // Small delay to let the browser process other idle tasks/networking
+        if (!isCancelled) {
+          await new Promise((resolve) => setTimeout(resolve, 50))
+        }
       }
     }
 
-    idleId = requestIdle(loadNextBatch)
+    // Start lazy loading asynchronously
+    processLazyQueue()
 
     return () => {
       isCancelled = true
-      if (idleId !== undefined) cancelIdle(idleId)
     }
   }, [enabled, priorityFrames])
 
