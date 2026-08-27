@@ -81,7 +81,10 @@ export function ProjectsSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-transparent z-10 md:h-auto">
+    <section ref={sectionRef} className="relative w-full bg-transparent z-10 md:h-auto -mt-[1px]">
+      {/* Gradient hitam di atas untuk nge-blend dengan bagian bawah Hero section (hanya desktop) */}
+      <div className="absolute top-0 inset-x-0 h-72 bg-gradient-to-b from-black to-transparent pointer-events-none z-0 hidden md:block" />
+      
       {/* CSS Sticky pins the container on desktop, static on mobile */}
       <div className="md:sticky md:top-0 w-full md:h-screen flex flex-col justify-center overflow-hidden pointer-events-none pt-24 pb-16 md:py-0">
         

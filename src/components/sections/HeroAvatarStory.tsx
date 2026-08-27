@@ -258,7 +258,7 @@ export function HeroAvatarStory() {
         muted
         playsInline
         preload="auto"
-        className="pointer-events-none absolute inset-0 z-0 hidden h-full w-full select-none object-cover object-center opacity-95 md:block"
+        className="pointer-events-none absolute inset-0 z-0 hidden h-[95%] w-full select-none object-cover object-center opacity-95 md:block"
       />
       <div className="pointer-events-none absolute inset-0 z-10 hidden bg-[radial-gradient(circle_at_50%_42%,transparent_18%,rgba(0,0,0,0.28)_52%,rgba(0,0,0,0.88)_100%)] md:block" />
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-56 bg-gradient-to-b from-black via-black/60 to-transparent md:block" />
