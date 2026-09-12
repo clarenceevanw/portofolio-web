@@ -58,6 +58,8 @@ export function ProjectsSection() {
               start: 'top top',
               end: () => `+=${getTrackWidth()}`, 
               scrub: true, // using true instead of 1 is less laggy on lower-end devices
+              // Measure after the higher-priority pinned Hero has added its spacer.
+              refreshPriority: -10,
               invalidateOnRefresh: true,
               onRefresh: applyHeight
             },
