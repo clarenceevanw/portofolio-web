@@ -146,8 +146,53 @@ export const projects: Project[] = [
   },
   {
     id: '4',
-    slug: 'gudang-pintar',
+    slug: 'logix',
     number: '04',
+    title: 'LOGIX',
+    description:
+      'Logistics and fleet management platform with real-time GPS tracking, shipment monitoring, route-based cost estimation, and a driver PWA.',
+    longDescription:
+      'LogiX is a logistics and fleet management platform that connects logistics administrators, warehouse teams, and drivers through shipment and delivery workflows. The system supports role-based access control, real-time driver GPS tracking, and shipment monitoring using Laravel Reverb. SeaRoute and OpenRoute support sea and land routing, while tariff-based calculations provide cost estimates for direct routes and shipments. Additional operational expenses, including fuel purchases, can be recorded alongside shipment costs. A mobile-friendly Progressive Web App provides drivers with access to delivery information and tracking workflows from their phones.',
+    thumbnail: '/assets/projects/logix/hero.png',
+    images: [
+      '/assets/projects/logix/hero.png',
+      '/assets/projects/logix/dashboard-superadmin.png',
+      '/assets/projects/logix/rbac.png',
+      '/assets/projects/logix/dashboard-logistik.png',
+      '/assets/projects/logix/shipments.png',
+      '/assets/projects/logix/order.png',
+      '/assets/projects/logix/routes.png',
+      '/assets/projects/logix/driver-shipments.png',
+      '/assets/projects/logix/driver-map.png',
+      '/assets/projects/logix/tracking-shipments.png',
+    ],
+    techStack: [
+      'PHP',
+      'LARAVEL',
+      'REVERB',
+      'MYSQL',
+      'SEAROUTE',
+      'OPENROUTE',
+      'PWA',
+    ],
+    category: 'FULLSTACK',
+    year: '2026',
+    role: 'Backend Developer',
+    liveUrl: '#',
+    githubUrl: 'https://github.com/Baksoman/sistem-logistik-dan-manajemen-armada/',
+    contributions: [
+      'Implemented role-based access control for logistics administrators, warehouse administrators, and drivers',
+      'Developed driver GPS tracking and real-time location updates using Laravel Reverb',
+      'Built shipment tracking workflows to help logistics administrators monitor delivery progress',
+      'Implemented tariff-based cost calculations for direct routes and shipments',
+      'Developed operational expense recording, including fuel purchases, to track additional shipment costs',
+      'Built mobile-friendly driver interfaces as a Progressive Web App for accessing delivery information and tracking workflows',
+    ],
+  },
+  {
+    id: '5',
+    slug: 'gudang-pintar',
+    number: '05',
     title: 'GUDANGPINTAR',
     description:
       'Multi-tenant warehouse management SaaS with inventory tracking, subscriptions, and QR-based operations.',
@@ -186,9 +231,9 @@ export const projects: Project[] = [
     ]
   },
   {
-    id: '5',
+    id: '6',
     slug: 'bem-petra-platform',
-    number: '05',
+    number: '06',
     title: 'BEM PETRA PLATFORM',
     description:
       'Centralized administration platform powering multiple BEM Petra digital services.',
@@ -227,9 +272,9 @@ export const projects: Project[] = [
     ]
   },
   {
-    id: '6',
+    id: '7',
     slug: 'youthentic-perfume',
-    number: '06',
+    number: '07',
     title: 'YOUTHENTIC PERFUME',
     description:
       'Brand website and product catalog platform developed for a local perfume business.',
