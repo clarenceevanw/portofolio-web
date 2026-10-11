@@ -34,7 +34,7 @@ export const AVATAR_STORY_CHECKPOINTS: StoryCheckpoint[] = [
     start: 0.30,
     end: 0.42,
     headline: ['SOFTWARE', 'ENGINEER'],
-    text: "I'm a Software Engineer and 4th-semester Computer Science student at Petra Christian University, based in Surabaya, Indonesia.",
+    text: "I'm a Software Engineer and 5th-semester Computer Science student at Petra Christian University, based in Surabaya, Indonesia.",
   },
   {
     id: 'up-right',

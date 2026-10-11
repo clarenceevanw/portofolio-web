@@ -74,7 +74,7 @@ function AboutContent({ isVisible }: { isVisible: boolean }) {
           id="about-intro-text"
           className="font-mono text-[13px] text-muted opacity-0 leading-[1.8] mb-8"
         >
-          HELLO_WORLD.exe — I'm a Software Engineer and 4th-semester Computer Science student at Petra Christian University, based in Surabaya, Indonesia. I build scalable web applications, real-time platforms, and full-stack systems using Laravel and Next.js. My experience spans backend architecture, authentication systems, WebSocket communication, database design, and deployment pipelines. <br/><br/>Currently serving as both a Laboratory Assistant and Teaching Assistant, I enjoy building software, solving complex problems, and helping others understand how technology works beneath the surface.
+          HELLO_WORLD.exe — I'm a Software Engineer and 5th-semester Computer Science student at Petra Christian University, based in Surabaya, Indonesia. I build scalable web applications, real-time platforms, and full-stack systems using Laravel and Next.js. My experience spans backend architecture, authentication systems, WebSocket communication, database design, and deployment pipelines. <br/><br/>Currently serving as both a Laboratory Assistant and Teaching Assistant, I enjoy building software, solving complex problems, and helping others understand how technology works beneath the surface.
         </p>
         
         <div className="flex mb-10">
