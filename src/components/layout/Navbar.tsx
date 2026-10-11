@@ -32,14 +32,39 @@ export function Navbar() {
           <li className="text-muted hover:text-teal transition-colors duration-200 cursor-pointer">
             <a href="/#contact" onClick={(e) => { e.preventDefault(); handleNav('/#contact') }}>CONTACT</a>
           </li>
+          <li className="text-muted hover:text-teal transition-colors duration-200 cursor-pointer">
+            <a 
+              href="/assets/resume.pdf" 
+              download="Clarence_Evan_Wijaya_Resume.pdf"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 group"
+            >
+              <span>RESUME</span>
+            </a>
+          </li>
         </ul>
         
-        <button 
-          className="md:hidden text-teal flex items-center"
-          onClick={() => setIsMenuOpen(true)}
-        >
-          <span className="material-symbols-outlined">menu</span>
-        </button>
+        <div className="md:hidden flex items-center gap-4">
+          <a 
+            href="/assets/resume.pdf" 
+            download="Clarence_Evan_Wijaya_Resume.pdf"
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-muted hover:text-teal transition-colors flex items-center"
+            title="Download Resume"
+            aria-label="Download Resume"
+          >
+            <span className="material-symbols-outlined text-[20px]">download</span>
+          </a>
+          <button 
+            className="text-teal flex items-center"
+            onClick={() => setIsMenuOpen(true)}
+            aria-label="Open menu"
+          >
+            <span className="material-symbols-outlined">menu</span>
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Menu Overlay */}
@@ -51,6 +76,7 @@ export function Navbar() {
         <button 
           className="absolute top-8 right-8 text-white hover:text-teal transition-colors"
           onClick={() => setIsMenuOpen(false)}
+          aria-label="Close menu"
         >
           <span className="material-symbols-outlined text-4xl">close</span>
         </button>
@@ -81,6 +107,18 @@ export function Navbar() {
               className="text-white hover:text-teal transition-colors"
             >
               CONTACT
+            </a>
+          </li>
+          <li>
+            <a 
+              href="/assets/resume.pdf" 
+              download="Clarence_Evan_Wijaya_Resume.pdf"
+              target="_blank" 
+              rel="noopener noreferrer"
+              onClick={() => setIsMenuOpen(false)}
+              className="text-white hover:text-teal transition-colors flex items-center gap-3"
+            >
+              <span>RESUME</span>
             </a>
           </li>
         </ul>
