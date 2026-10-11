@@ -17,7 +17,7 @@ type StoryCheckpoint = {
 const ROLE_BADGES = ['Software Engineer', 'CS Student', 'Lab Assistant']
 const SKILL_BADGES = ['LARAVEL', 'JAVA', 'PHP', 'PYTHON', 'REACT', 'NEXT.JS', 'TYPESCRIPT']
 const MOBILE_ABOUT_PARAGRAPHS = [
-  "HELLO_WORLD.exe - I'm a Software Engineer and 4th-semester Computer Science student at Petra Christian University, based in Surabaya, Indonesia. I build scalable web applications, real-time platforms, and full-stack systems using Laravel and Next.js.",
+  "HELLO_WORLD.exe - I'm a Software Engineer and 5th-semester Computer Science student at Petra Christian University, based in Surabaya, Indonesia. I build scalable web applications, real-time platforms, and full-stack systems using Laravel and Next.js.",
   'My experience spans backend architecture, authentication systems, WebSocket communication, database design, and deployment pipelines. Currently serving as both a Laboratory Assistant and Teaching Assistant, I enjoy building software, solving complex problems, and helping others understand how technology works beneath the surface.',
 ]
 
