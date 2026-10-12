@@ -225,9 +225,10 @@ export const projects: Project[] = [
       'Developed inventory, batch management, and warehouse transaction modules',
       'Implemented QR-based tracking systems for warehouse assets and inventory batches',
       'Integrated Midtrans subscription billing for SaaS renewal workflows',
-      'Built supply and purchase transaction management features',
+      'Co-designed the database structure (ERD) with two teammates',
       'Managed GitHub-based collaboration through pull requests and issue tracking',
-      'Coordinated development efforts across a team of 4 developers'
+      'Coordinated development efforts across a team of 4 developers',
+      'Modeled the supply, buy, and subscription workflows as BPMN diagrams for this case study'
     ]
   },
   {
